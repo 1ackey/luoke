@@ -1,0 +1,265 @@
+@font-face {
+  font-family: 'ShangShouDunDun';
+  src: url('/fonts/ShangShouDunDun.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── CSS Custom Properties ── */
+:root {
+  --font: 'ShangShouDunDun', 'KaiTi', 'SimKai', 'STKaiti', serif;
+
+  /* Palette */
+  --paper:       #F5F2E1;
+  --paper-dark:  #E8E3CA;
+  --paper-edge:  #D4CCB0;
+  --ink:         #1E1A14;
+  --ink-mid:     #3A3528;
+  --blue-deep:   #2D4B73;
+  --blue-mid:    #3A6694;
+  --green-deep:  #2C5F2E;
+  --green-mid:   #4A7C3F;
+  --orange:      #C4501A;
+  --gold:        #D4A017;
+  --gold-light:  #F0C842;
+  --red:         #8B2020;
+  --cream:       #FEF9E7;
+  --teal:        #1B7A82;
+
+  /* Scene colours */
+  --scene-sky:    #B8D8EE;
+  --scene-wall:   #F0E4CC;
+  --scene-desk:   #C8A070;
+  --scene-desk-d: #9A7040;
+  --scene-wood:   #8B6035;
+
+  /* Sizing */
+  --radius-card: 24px;
+  --radius-sm:   12px;
+  --radius-xs:   8px;
+  --border:      3px solid var(--ink);
+  --shadow:      4px 4px 0px var(--ink);
+  --shadow-lg:   6px 6px 0px var(--ink);
+
+  /* Spacing */
+  --gap:   12px;
+  --gap-lg: 20px;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  /* ShangShouDunDun overrides animal-island-ui's bundled fonts */
+  font-family: var(--font) !important;
+  background: var(--scene-wall);
+  /* cursor handled by animal-island-ui <Cursor> wrapper */
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── Newspaper Stage — the flying newspaper wrapper ── */
+.newspaper-stage {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 28px 20px 60px;
+}
+
+/* ── Newspaper Paper Shell ── */
+.newspaper-paper {
+  background: var(--paper);
+  width: 100%;
+  max-width: 1160px;
+  border: var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  position: relative;
+  /* Stack effect: show "pages" peeking behind */
+  box-shadow:
+    0 4px 0 var(--ink),                       /* hard bottom edge */
+    4px 0 0 var(--ink),                       /* hard right edge */
+    -5px  7px 0 var(--paper-dark),            /* page 2 peek left */
+    -10px 14px 0 var(--paper-edge),           /* page 3 peek left */
+    0 28px 80px rgba(30, 26, 20, 0.55),       /* deep cast shadow */
+    0 8px  24px rgba(30, 26, 20, 0.25);       /* soft lift shadow */
+}
+
+/* parchment line texture */
+.newspaper-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 29px,
+      rgba(30,26,20,0.035) 29px,
+      rgba(30,26,20,0.035) 30px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Body 3-column grid ── */
+.newspaper-body {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr 1fr;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.col {
+  padding: var(--gap);
+}
+
+.col-left {
+  border-right: var(--border);
+}
+
+.col-center {
+  border-right: var(--border);
+}
+
+/* ── PDF Page Frame ── */
+.pdf-page-frame {
+  position: relative;
+  z-index: 1;
+  background: var(--paper);
+  min-height: 60vh;
+  border-top: var(--border);
+}
+
+/* ── Section label ── */
+.col-label {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--cream);
+  background: var(--blue-deep);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+  margin-bottom: 10px;
+  display: inline-block;
+  box-shadow: 2px 2px 0 var(--ink);
+  letter-spacing: 2px;
+}
+
+/* ── Generic card ── */
+.card {
+  background: var(--cream);
+  border: var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  margin-bottom: var(--gap);
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ── Typography — sized for classroom projection ── */
+h1, h2, h3, h4 {
+  font-family: var(--font);
+  color: var(--blue-deep);
+}
+
+.article-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: var(--blue-deep);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.article-body {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.95;
+}
+
+.article-author {
+  font-size: 12px;
+  color: var(--blue-mid);
+  text-align: right;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ── Bottom section ── */
+.bottom-section {
+  border-top: var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.bottom-col {
+  padding: var(--gap);
+}
+
+.bottom-col:not(:last-child) {
+  border-right: var(--border);
+}
+
+/* ── Flowing border (CSS custom property trick) ── */
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes flowing-border {
+  to { --gradient-angle: 360deg; }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--blue-deep);
+  border-radius: 4px;
+}
+
+/* ── Utility ── */
+.text-blue   { color: var(--blue-deep); }
+.text-orange { color: var(--orange); }
+.text-gold   { color: var(--gold); }
+.text-green  { color: var(--green-deep); }
+.bold        { font-weight: bold; }
+
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
