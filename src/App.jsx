@@ -62,13 +62,6 @@ export default function App() {
           opacity: { duration: 0.25 },
         },
       })
-
-      /* Stage 2 — gentle float on the desk */
-      controls.start({
-        y: [0, -6, 0],
-        rotate: [-1.5, -0.8, -1.5],
-        transition: { duration: 5.5, repeat: Infinity, ease: 'easeInOut' },
-      })
     }, 500)
 
     return () => clearTimeout(t)
@@ -96,18 +89,8 @@ export default function App() {
           >
             <div className="newspaper-paper">
               <NewspaperHeader />
-
-              {/*
-               * ══════════════════════════════════════════════════════════
-               *  PDF 正文内容区域
-               *  将你们排版好的报纸图片插入 PageViewer 组件的 PAGES 数组
-               *  路径: src/components/PageViewer.jsx → const PAGES = [...]
-               * ══════════════════════════════════════════════════════════
-               */}
               <PageViewer />
 
-              {/* animal-island-ui forest footer */}
-              <Footer type="tree" />
             </div>
           </motion.div>
         )}

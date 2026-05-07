@@ -1,65 +1,96 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-let nextId = 0
-/* Reduced to 3 emoji types; max 5 particles per click */
-const EMOJIS = ['⭐', '✦', '✨']
+let id = 0
 
-function Particle({ x, y, emoji, angle, id, onDone }) {
-  const dist = 50 + Math.random() * 50
-  const dx = Math.cos(angle) * dist
-  const dy = Math.sin(angle) * dist
+function Sparkle({ x, y, delay, onDone }) {
+  const offsetX = (Math.random() - 0.5) * 80
+  const offsetY = -30 - Math.random() * 60
+  const rotate = (Math.random() - 0.5) * 120
 
   return (
     <motion.div
-      key={id}
+      initial={{
+        opacity: 0,
+        scale: 0,
+        x: 0,
+        y: 0,
+        rotate: 0,
+      }}
+      animate={{
+        opacity: [0, 1, 0],
+        scale: [0, 1, 0.6],
+        x: offsetX,
+        y: offsetY,
+        rotate,
+      }}
+      transition={{
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1],
+        delay,
+      }}
+      onAnimationComplete={onDone}
       style={{
         position: 'fixed',
         left: x,
         top: y,
-        fontSize: 14 + Math.random() * 8,
         pointerEvents: 'none',
-        zIndex: 99998,
-        userSelect: 'none',
-        willChange: 'transform, opacity',
+        zIndex: 9999,
       }}
-      initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-      animate={{ x: dx, y: dy, opacity: 0, scale: 0.4 }}
-      transition={{ duration: 0.55 + Math.random() * 0.25, ease: 'easeOut' }}
-      onAnimationComplete={onDone}
     >
-      {emoji}
+      <div
+        style={{
+          width: 10,
+          height: 10,
+          borderRadius: '999px',
+          background: 'rgba(255,255,255,0.9)',
+          boxShadow: `
+            0 0 8px rgba(255,255,255,0.8),
+            0 0 18px rgba(255,255,255,0.5)
+          `,
+          backdropFilter: 'blur(2px)',
+        }}
+      />
     </motion.div>
   )
 }
 
-export default function ClickParticles() {
+export default function ClickSparkles() {
   const [particles, setParticles] = useState([])
 
   const handleClick = useCallback((e) => {
-    const count = 5
-    const newParticles = Array.from({ length: count }, (_, i) => ({
-      id: ++nextId,
+    const amount = 6
+
+    const newParticles = Array.from({ length: amount }, (_, i) => ({
+      id: id++,
       x: e.clientX,
       y: e.clientY,
-      emoji: EMOJIS[i % EMOJIS.length],
-      angle: (Math.PI * 2 * i) / count,
+      delay: i * 0.03,
     }))
+
     setParticles(prev => [...prev, ...newParticles])
   }, [])
 
-  // Attach once at mount
   useEffect(() => {
     window.addEventListener('click', handleClick)
-    return () => window.removeEventListener('click', handleClick)
+
+    return () => {
+      window.removeEventListener('click', handleClick)
+    }
   }, [handleClick])
 
-  const remove = (id) => setParticles(prev => prev.filter(p => p.id !== id))
+  const remove = (targetId) => {
+    setParticles(prev => prev.filter(p => p.id !== targetId))
+  }
 
   return (
     <AnimatePresence>
       {particles.map(p => (
-        <Particle key={p.id} {...p} onDone={() => remove(p.id)} />
+        <Sparkle
+          key={p.id}
+          {...p}
+          onDone={() => remove(p.id)}
+        />
       ))}
     </AnimatePresence>
   )

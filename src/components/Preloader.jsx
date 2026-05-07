@@ -39,18 +39,7 @@ export default function Preloader({ onComplete }) {
         exit={{ opacity: 0, scale: 1.04 }}
         transition={{ duration: 0.45 }}
       >
-        {/* Shadow under ball */}
-        <motion.div
-          style={{
-            width: 70,
-            height: 10,
-            borderRadius: '50%',
-            background: 'rgba(30,26,20,0.18)',
-            marginBottom: 4,
-          }}
-          animate={{ scaleX: [1, 1.35, 1, 0.8, 1] }}
-          transition={{ duration: 0.85, repeat: 3, ease: 'easeInOut' }}
-        />
+
 
         {/* Ball squash-and-stretch */}
         <motion.div

@@ -35,7 +35,10 @@ function PlaceholderPage() {
  * { label: '第二版', content: <img src="/pages/page2.jpg" style={{width:'100%'}} /> }
  * ─────────────────────────────────────────────────────────────────────────── */
 const PAGES = [
-  { label: '第一版', content: <PlaceholderPage /> },
+{ content: <img src="/public/P1.jpg" style={{width:'100%'}} />},
+{ content: <img src="/public/P2.jpg" style={{width:'100%'}} />},
+{ content: <img src="/public/P3.jpg" style={{width:'100%'}} />},
+{ content: <img src="/public/P4.jpg" style={{width:'100%'}} />},
 ]
 
 export default function PageViewer() {
